@@ -1,6 +1,7 @@
 from DatabaseSchema import DatabaseSchema
 import ollama
 
+modelSelected = "llama3.1"
 
 def LLMToSQL(userQuery, db_info):
     
@@ -14,7 +15,7 @@ def LLMToSQL(userQuery, db_info):
             'content': f'{userQuery}'
         }
     ]
-    response = ollama.chat(model='llama3.1', messages=messages)
+    response = ollama.chat(model=modelSelected, messages=messages)
     return response['message']['content']
 
 def DescribeDatabase(dbColumnsAndTables):
@@ -25,10 +26,10 @@ def DescribeDatabase(dbColumnsAndTables):
         },
         {
             'role': 'user',
-            'content': f'{dbColumnsAndTables}'
+            'content': f'Can you describe the information about the database in plain english {dbColumnsAndTables}?'
         }
     ]
-    response = ollama.chat(model='llama3.1', messages=messages)
+    response = ollama.chat(model=modelSelected, messages=messages)
     return response['message']['content']
 
 
@@ -43,15 +44,15 @@ def InterpretResults(userQuery, results):
             'content': f'{userQuery}'
         }
     ]
-    response = ollama.chat(model='llama3.1', messages=messages)
+    response = ollama.chat(model=modelSelected, messages=messages)
     return response['message']['content']
 
 
 
 if __name__ == "__main__":
     db_config = {
-        'user': '[user]',
-        'password': '[password]',
+        'user': 'dbUser',
+        'password': 'password',
         'host': 'localhost',
         'database': 'world'
     }
